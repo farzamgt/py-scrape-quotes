@@ -19,8 +19,10 @@ def fetch_page(url: str) -> tuple[str, str]:
     next_button = soup.find("li", class_="next")
     next_page_url = (
         f"https://quotes.toscrape.com{next_button.find('a')['href']}"
-        if next_button else None
+        if next_button
+        else None
     )
+
     return response.text, next_page_url
 
 
@@ -32,7 +34,9 @@ def parse_quotes_from_html(html: str) -> list[Quote]:
     for div in quote_divs:
         text = div.find("span", class_="text").get_text(strip=True)
         author = div.find("small", class_="author").get_text(strip=True)
-        tags = [tag.get_text(strip=True) for tag in div.find_all("a", class_="tag")]
+        tags = [
+            tag.get_text(strip=True) for tag in div.find_all("a", class_="tag")
+        ]
         quotes.append(Quote(text, author, tags))
 
     return quotes
